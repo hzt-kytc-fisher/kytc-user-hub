@@ -1,7 +1,9 @@
 package com.kytc.user.hub.server.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.kytc.user.api.UserInfoApi;
 import com.kytc.user.request.UserInfoRequest;
+import com.kytc.user.request.UserInfoSearchRequest;
 import com.kytc.user.response.UserInfoResponse;
 
 import com.kytc.framework.web.common.BasePageResponse;
@@ -17,7 +19,7 @@ import javax.validation.Valid;
 
 @RestController
 @Slf4j
-@Api(tags = "用户基本信息操作")
+@Api(tags = "用户基本信息hub 操作")
 @RequestMapping("/hub/user")
 @RequiredArgsConstructor(onConstructor_={@Autowired})
 public class UserInfoController {
@@ -26,13 +28,14 @@ public class UserInfoController {
 	@ApiOperation("查询用户基本信息列表")
 	@PostMapping("/list")
 	public BaseResponse<BasePageResponse<UserInfoResponse>> listByCondition(
-		@RequestBody @Valid UserInfoRequest request){
+		@RequestBody @Valid UserInfoSearchRequest request){
+		log.info("查询用户信息request:{}", JSON.toJSONString(request));
 		return BaseResponse.success(this.userInfoApi.listByCondition(request));
 	}
 
 	@ApiOperation("添加用户基本信息数据")
 	@PostMapping("/info")
-	public BaseResponse<Boolean> add(@RequestBody @Valid UserInfoRequest request){
+	public BaseResponse<Long> add(@RequestBody @Valid UserInfoRequest request){
 		return BaseResponse.success(this.userInfoApi.add(request));
 	}
 
